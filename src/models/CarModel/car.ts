@@ -4,5 +4,5 @@ export interface Car{
     colorName:string;
     modelName:string;
     dailyPrice:number;
-   
+    imagePath:string;
 }
