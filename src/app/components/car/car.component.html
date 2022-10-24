@@ -3,7 +3,31 @@
         <span class="visually-hidden">Loading...</span>
       </div>
 </div>
+<div class="row mt-3">
+    <div class="col-md-5">
+        <select [(ngModel)]="selectedBrand" class="form-select" aria-label="Default select example">
+            <option *ngFor="let brand of brands" [ngValue]="brand">{{brand.brandName}}</option>
+           
+          </select>
+    </div>
+    <div class="col-md-5">
+        <select [(ngModel)]="selectedColor" class="form-select" aria-label="Default select example">
+            <option [ngValue]="color" *ngFor="let color of colors" >{{color.colorName}}</option>
+           
+          </select>
+    </div>
+    <div class="col-md-2">
+        <button (click)="getCarsByColorAndBrand()"  class="btn btn-secondary">Filtrele</button>
+    </div>
+  </div>
 
+<div class="mb-3">
+    <label for="filterText" class="form-label">Araba Ara</label>
+    <input [(ngModel)]="filterText" type="text" class="form-control" id="filterText" placeholder="Ara">
+</div>
+<div *ngIf="filterText">
+    <p>{{filterText}} aradınız</p>
+</div>
 <table class="table" *ngIf="dataLoaded==true ">
     <thead>
         <th>İd</th>
@@ -13,7 +37,7 @@
         <th>Fiyatı</th>
     </thead>
     <tbody>
-        <tr *ngFor="let car of cars"  (click)="goCarDetail(car.id)">
+        <tr *ngFor="let car of cars | carFilter:filterText"  (click)="goCarDetail(car.id)">
             <td>{{car.id}}</td>
             <td>{{car.modelName}}</td>
             <td>{{car.brandName}}</td>

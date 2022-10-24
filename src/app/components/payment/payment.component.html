@@ -1,0 +1,52 @@
+<div class="container p-0">
+    <div class="card px-4">
+        <p class="h8 py-3">Ödeme İşlemleri</p>
+        <form [formGroup]="paymentForm" (ngSubmit)="addPayment()">
+        <div class="row gx-3">
+            <div class="col-12">
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">Ad Soyad</p>
+                    <input class="form-control mb-3" type="text" placeholder="Ad Soyad" formControlName="fullName" >
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">Kart Numarası</p>
+                    <input class="form-control mb-3"  type="text" placeholder="1234 5678 435678" formControlName="cardNo">
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">Son Kullanma Tarihi</p>
+                    <div class="row">
+                        <div class="col-6">
+                            <input class="form-control  mb-3" type="number" placeholder="Ay" formControlName="month">
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control mb-3" type="number" placeholder="Yıl"formControlName="year">
+                        </div>
+                  
+                       
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">CVV/CVC</p>
+                    <input class="form-control mb-3 pt-2 " type="password" placeholder="***"formControlName="cvv">
+                </div>
+            </div>
+            <div class="col-12"*ngFor="let c of car">
+                <input type="number" formControlName="dailyPrice" [value]="c.dailyPrice">
+                <input type="number"  formControlName="carId" [value]="c.id">
+
+                <button class="btn btn-primary mb-3" type="submit"  >
+                    <span class="ps-3">Pay {{c.dailyPrice|currency}}</span>
+                    <span class="fas fa-arrow-right"></span>
+                </button>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
