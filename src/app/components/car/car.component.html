@@ -28,6 +28,24 @@
 <div *ngIf="filterText">
     <p>{{filterText}} aradınız</p>
 </div>
+<div class="row">
+    <div class="mb-3 col-4">
+        <div class="align-items-end justify-content-end d-flex">
+            <button routerLink="cars/carAdd" class="btn btn-warning">Araba Ekle</button>
+        </div>
+    
+    </div>
+    <div class="mb-3 col-4"> 
+        <div class="align-items-end justify-content-end d-flex">
+            <button routerLink="brands/BrandAdd" class="btn btn-warning">Marka Ekle</button>
+        </div>
+    </div>
+    <div class="mb-3 col-4"> 
+        <div class="align-items-end justify-content-end d-flex">
+            <button routerLink="colors/colorAdd" class="btn btn-warning">Renk Ekle</button>
+        </div>
+    </div>
+</div>
 <table class="table" *ngIf="dataLoaded==true ">
     <thead>
         <th>İd</th>
@@ -35,6 +53,7 @@
         <th>Markası</th>
         <th>Rengi</th>
         <th>Fiyatı</th>
+        <th>Güncelle</th>
     </thead>
     <tbody>
         <tr *ngFor="let car of cars | carFilter:filterText"  (click)="goCarDetail(car.id)">
@@ -43,6 +62,7 @@
             <td>{{car.brandName}}</td>
             <td>{{car.colorName}}</td>
             <td>{{car.dailyPrice}}</td>
+            <td><button class="btn btn-info" routerLink="cars/carupdate/2">Güncelle</button></td>
         </tr>
     </tbody>
 </table>

@@ -18,6 +18,11 @@ import { CarFilterPipe } from './pipes/car-filter.pipe';
 import { RouterModule } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 import { PaymentComponent } from './components/payment/payment.component';
+import { CarAddComponent } from './components/car/car-add/carr-add.component';
+import { BrandAddComponent } from './components/brand/brand-add/brand-add.component';
+import { ColorAddComponent } from './components/color/color-add/color-add.component';
+import { CarUpdateComponent } from './components/car/car-update/car-update.component';
+import { LoginComponent } from './components/login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +35,12 @@ import { PaymentComponent } from './components/payment/payment.component';
     CustomerComponent,
     CarDetailComponent,
     CarFilterPipe,
-    PaymentComponent
+    PaymentComponent,
+    CarAddComponent,
+    BrandAddComponent,
+    ColorAddComponent,
+    CarUpdateComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,13 @@
+<div class="container">
+    <form class="row g-3" [formGroup]="colorAddForm">
+        <div class="col-md-12">
+          <label for="colorName" class="form-label">Renk Adı</label>
+          <input type="text" formControlName="colorName" class="form-control" id="colorName">
+        </div>
+      
+      
+        <div class="col-12 align-items-end justify-content-end d-flex">
+          <button type="submit" (click)="addColor()" class="btn btn-primary ">Ekle</button>
+        </div>
+      </form>
+</div>

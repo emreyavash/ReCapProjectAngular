@@ -1,0 +1,53 @@
+<div class="container" >
+    <form class="row g-3" [formGroup]="updateCarForm" *ngFor="let c of car"  >
+        <div class="col-md-6">
+          <label for="carName" class="form-label">Araba Adı</label>
+          <input type="text" formControlName="id" class="form-control" id="carName" [ngModel]="c.id" [readonly]="true">
+        </div>
+        <div class="col-md-6">
+          <label for="carName" class="form-label">Araba Adı</label>
+          <input type="text" formControlName="modelName" class="form-control" id="carName" [ngModel]="c.modelName">
+        </div>
+        <div class="col-md-6">
+            <label for="dailyPrice" class="form-label">Fiyatı</label>
+            <input type="number" formControlName="dailyPrice" class="form-control" id="dailyPrice" placeholder="1234" [ngModel]="c.dailyPrice">
+          </div>
+        <div class="col-md-6">
+          <label for="brand" class="form-label">Markası</label>
+          <select id="brand" class="form-select" formControlName="brandId" [ngModel]="c.brandId">
+            <option selected>Marka Seçiniz</option>
+
+            <option *ngFor="let brand of brands" [ngValue]="brand.id">
+              
+              {{ brand.brandName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="color" class="form-label">Rengi</label>
+          <select id="color" class="form-select" formControlName="colorId" [ngModel]="c.colorId">
+            <option selected>Renk Seçiniz</option>
+
+            <option *ngFor="let color of colors" [ngValue]="color.id">
+              
+              {{ color.colorName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="inputCity" class="form-label">Arabanın Yılı</label>
+          <input type="date" formControlName="modelYear" class="form-control" id="inputCity" [ngModel]="c.modelYear" datetime="dd-MM-yyyy">
+          
+        </div>
+        <div class="col-12">
+            <label for="description" class="form-label">Açıklama</label>
+            <textarea class="form-control" formControlName="description" id="description" rows="3" [ngModel]="c.description"></textarea>
+            
+          </div>
+ 
+      
+        <div class="col-12 align-items-end justify-content-end d-flex">
+          <button type="submit" (click)="updateCar()" class="btn btn-primary ">Güncelle</button>
+        </div>
+      </form>
+</div>

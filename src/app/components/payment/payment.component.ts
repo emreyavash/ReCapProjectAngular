@@ -71,12 +71,15 @@ export class PaymentComponent implements OnInit {
       let paymentModel = Object.assign({},this.paymentForm.value)
       console.log(paymentModel)
       this.paymentService.addPayment(paymentModel).subscribe(response=>{
-        if(response.success){
+       
           this.location.back();
-        }
-        else{
-          console.log("deneme")
-          this.toastrService.error("Ödeme Başarısız")
+        
+      },responseError=>{
+        if (responseError.error.Errors.length>0) {
+          for (let i = 0; i < responseError.error.Errors.length; i++) {
+          this.toastrService.error(responseError.error.Errors[i].ErrorMessage,"Doğrulama Hatası")
+            
+          }
         }
       });
 
