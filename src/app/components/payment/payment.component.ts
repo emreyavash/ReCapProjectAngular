@@ -9,6 +9,8 @@ import { Payment } from 'src/models/PaymentModel/payment';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { Rental } from 'src/models/RentalModel/rental';
+import { AuthService } from 'src/app/services/AuthService/auth.service';
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
@@ -16,12 +18,14 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class PaymentComponent implements OnInit {
   car:Car[] ;
+  rentCar = JSON.parse(localStorage.getItem("Car"))
 
   paymentForm:FormGroup;
   
   constructor(
     private paymentService:PaymentService,
     private rentalService:RentalService,
+    private authService:AuthService,
     private carDetailService:CarDetailService,
     private activatedRoute:ActivatedRoute,
     private formBuilder:FormBuilder,
@@ -34,13 +38,10 @@ export class PaymentComponent implements OnInit {
       if (params["carId"]) {
         this.getCarDetail(params["carId"]);
         this.createPaymentForm();
-        // this.getCarId(params["carId"]);
-        console.log(this.car)
-
       }
     })
   }
- 
+
   createPaymentForm(){
     
     this.paymentForm = this.formBuilder.group({
@@ -49,17 +50,18 @@ export class PaymentComponent implements OnInit {
       month:["",Validators.required],
       year:["",Validators.required],
       cvv:["",Validators.required],
-      dailyPrice:[""],
-      carId:[""]
+      price:[this.rentCar['dailyPrice']],
+      carId:[this.rentCar["carId"]],
+      userId:[this.rentCar["customerId"]],
     })
   }
   // ,this.paymentForm.controls["dailyPrice"].value,this.paymentForm.controls["carId"].value
-  setValue(){
-      this.paymentForm.setValue({
-        dailyPrice:this.paymentForm.get("dailyPrice").value,
-        carId:this.paymentForm.get("carId").value
-      })
-  }
+  // setValue(){
+  //     this.paymentForm.setValue({
+  //       dailyPrice:this.paymentForm.get("dailyPrice").value,
+  //       carId:this.paymentForm.get("carId").value
+  //     })
+  // }
   getCarDetail(carId:number){
     this.carDetailService.getCarDetailById(carId).subscribe(response=>{
       this.car = response.data;
@@ -69,10 +71,20 @@ export class PaymentComponent implements OnInit {
   addPayment(){
     if (this.paymentForm.valid) {
       let paymentModel = Object.assign({},this.paymentForm.value)
-      console.log(paymentModel)
+   
+      
       this.paymentService.addPayment(paymentModel).subscribe(response=>{
-       
-          this.location.back();
+          // console.log(rentCar["carId"])
+          // rental:Rental = {"carId":this.rentCar["carId"],"customerId":this.rentCar["customerId"],"findexPoint":this.rentCar["findexPoint"],"userFindexPoint":this.rentCar["userFindexPoint"],"rentDate":this.rentCar["rentDate"],"returnDate":this.rentCar["returnDate"]}
+          
+            let rentalModel = Object.assign({},this.rentCar)
+            console.log(rentalModel)
+            this.rentalService.postRentalCar(this.rentCar).subscribe(response=>{
+              this.location.back();
+              this.toastrService.success("Ödeme Başarılı")
+            })
+          
+          
         
       },responseError=>{
         if (responseError.error.Errors.length>0) {
@@ -82,13 +94,11 @@ export class PaymentComponent implements OnInit {
           }
         }
       });
+   
+     
 
     }
   }
   
-  getCarId(carId:number){
-    let carReturn = this.car.find(x=>x.id === carId);
-    console.log(carReturn)
-    return carReturn;
-  }
+ 
 }

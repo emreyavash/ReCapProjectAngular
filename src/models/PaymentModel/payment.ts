@@ -7,5 +7,6 @@ export interface Payment{
     year:number;
     cvv:string;
     price:number;
+    userId:number;
     
 }

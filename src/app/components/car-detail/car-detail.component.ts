@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CarDetailService } from 'src/app/services/CarDetailService/car-detail.service';
 import { CarImageService } from 'src/app/services/CarImageService/car-image-service.service';
+import { CarService } from 'src/app/services/CarService/car.service';
 import { RentalService } from 'src/app/services/RentalService/rental.service';
 import { CarImage } from 'src/models/CarImageModel/carImage';
 import { Car } from 'src/models/CarModel/car';
@@ -21,7 +22,9 @@ export class CarDetailComponent implements OnInit {
   returnDate:string;
   dateEmpty=false;
   imageUrl ="https://localhost:44313/Uploads";
+  user=JSON.parse(localStorage.getItem('User'));
   constructor(private carDetailService:CarDetailService,
+    private carService:CarService,
     private rentalService:RentalService,
     private carImageService:CarImageService,
     private toastrService:ToastrService,
@@ -54,10 +57,12 @@ export class CarDetailComponent implements OnInit {
   postRentalCar(carId:number,rentDate:string,returnDate:string){
     this.rentalService.getRentalByCarId(carId).subscribe(response=>{
       this.rentalCars = response.data;
-      let rentedDate=this.rentalCars.find(x=>new Date(x.rentDate).toLocaleDateString() == new Date(rentDate).toLocaleDateString())
-      console.log(rentDate)
+      let localRentDate = new Date(rentDate).toLocaleDateString()
+      let localReturnDate = new Date(returnDate).toLocaleDateString()
+      let rentedDate=this.rentalCars.find(x=>new Date(x.rentDate).
+      toLocaleDateString() == new Date(rentDate).toLocaleDateString())
       if(rentedDate){
-        this.toastrService.error("Bu tarihte araba kiralıktır.",rentedDate.brandName)
+        this.toastrService.error("Bu tarihte araba kiralıktır.")
         this.dateEmpty =false;
       }
       else if(rentDate == undefined || returnDate == undefined){
@@ -66,6 +71,8 @@ export class CarDetailComponent implements OnInit {
       }
       else{
         this.dateEmpty = true;
+        this.setLocalStorage(carId,localRentDate,localReturnDate)
+
         this.toastrService.success("Ödeme sayfasına gidiliyor.");
         
 
@@ -74,6 +81,16 @@ export class CarDetailComponent implements OnInit {
 
     })
 
+  }
+
+  setLocalStorage(carId:number,rentDate:string,returnDate:string){
+    this.carService.getCarById(carId).subscribe(response=>{
+      this.cars = response.data;
+      let car = this.cars.find(x=>x.id == carId)
+      localStorage.setItem("Car",JSON.stringify({'carId':car.id,'customerId':this.user['id'],'dailyPrice':car.dailyPrice,'findexPoint':car.findexPoint,'rentDate':rentDate,'returnDate':returnDate}))
+    })
+
+    
   }
   
 }

@@ -8,4 +8,5 @@ export interface Car{
     colorId:number;
     description:string;
     modelYear:string;
+    findexPoint:number;
 }
